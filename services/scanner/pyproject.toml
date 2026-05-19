@@ -1,0 +1,54 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "azurelens-scanner"
+version = "0.0.0"
+description = "AzureLens scanning engine worker. Skeleton — no scanner logic yet."
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "Proprietary" }
+authors = [{ name = "AzureLens" }]
+dependencies = [
+  "pydantic>=2.7,<3.0",
+  "pydantic-settings>=2.2,<3.0",
+  "structlog>=24.1,<25.0",
+]
+
+[project.optional-dependencies]
+dev = [
+  "ruff>=0.4,<1.0",
+  "mypy>=1.10,<2.0",
+  "pytest>=8.2,<9.0",
+]
+# Future runtime extras (kept as a forward contract; not installed yet):
+# azure = [
+#   "azure-identity",
+#   "azure-mgmt-resourcegraph",
+#   "azure-mgmt-resource",
+#   "azure-mgmt-storage",
+#   "azure-mgmt-network",
+#   "azure-mgmt-compute",
+#   "azure-mgmt-keyvault",
+#   "azure-mgmt-security",
+#   "azure-mgmt-policyinsights",
+#   "azure-servicebus",
+#   "azure-storage-blob",
+# ]
+# graph = ["msgraph-sdk"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["scanner"]
+
+[project.scripts]
+azurelens-scanner = "scanner.main:main"
+
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+ignore_missing_imports = true
