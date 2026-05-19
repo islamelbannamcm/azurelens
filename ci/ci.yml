@@ -1,0 +1,99 @@
+name: ci
+
+# Foundation CI for the monorepo skeleton.
+# Validates each skeleton compiles / type-checks. No deploys, no Azure auth.
+#
+# Once real code lands, this workflow expands into:
+#   - matrix per service (lint + unit tests + coverage)
+#   - container image build + sign (Cosign) + push to ACR
+#   - IaC validation (terraform fmt/validate, bicep build, PSRule)
+#   - SAST (CodeQL), dependency review, Defender for DevOps
+#   - OIDC-federated deploy-dev on merge to main
+# See docs/ROADMAP.md and docs/ARCHITECTURE.md § 12.
+#
+# NOTE: This file is currently parked at ci/ci.yml because the bootstrap MCP
+# token lacks the GitHub `workflow` scope. Move it to .github/workflows/ci.yml
+# to activate. See ci/README.md.
+
+on:
+  push:
+    branches: [main, "feature/**"]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  # id-token: write   # added in Phase 1 for OIDC-federated Azure deploys
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # --- Frontend (Next.js + TypeScript) ---------------------------------------
+  frontend:
+    name: frontend (typecheck)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: apps/frontend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      # No lockfile yet; skeleton-only install.
+      - name: install (skeleton)
+        run: npm install --no-audit --no-fund --ignore-scripts
+      - name: typecheck
+        run: npx tsc --noEmit
+
+  # --- Python services (API + workers) ---------------------------------------
+  python:
+    name: python (${{ matrix.path }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - path: apps/api
+          - path: services/scanner
+          - path: services/threat-intel
+          - path: services/risk-engine
+          - path: services/ai-engine
+    defaults:
+      run:
+        working-directory: ${{ matrix.path }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: install (editable + dev extras)
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[dev]"
+      - name: ruff (lint)
+        run: ruff check .
+      - name: mypy (typecheck)
+        run: mypy .
+
+  # --- Terraform placeholder validation --------------------------------------
+  terraform:
+    name: terraform (fmt + validate)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: infra/terraform
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "1.7.5"
+      - name: fmt check
+        run: terraform fmt -check -recursive
+      - name: init (no backend)
+        run: terraform init -backend=false
+      - name: validate
+        run: terraform validate
