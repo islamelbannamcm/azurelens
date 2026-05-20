@@ -1,0 +1,482 @@
+/* AzureLens — frontend global styles (Phase 8 demo dashboard)
+ *
+ * Design tokens + minimal reset + reusable layout / card / badge / table /
+ * progress-bar primitives. No CSS framework dependency: the dashboard
+ * intentionally renders correctly with only this stylesheet.
+ *
+ * Phase 1+ may introduce a design-system package; the token names here
+ * (--color-*, --space-*, --radius-*, --shadow-*, --font-*) are stable and
+ * will map 1:1.
+ */
+
+:root {
+  /* Surface */
+  --color-bg: #f8fafc;
+  --color-surface: #ffffff;
+  --color-surface-muted: #f1f5f9;
+  --color-border: #e2e8f0;
+  --color-border-strong: #cbd5e1;
+
+  /* Text */
+  --color-text: #0f172a;
+  --color-text-muted: #475569;
+  --color-text-faint: #94a3b8;
+
+  /* Accent */
+  --color-accent: #2563eb;
+  --color-accent-soft: #dbeafe;
+
+  /* Severity / Band — semantic */
+  --color-critical: #b91c1c;
+  --color-critical-bg: #fee2e2;
+  --color-high: #c2410c;
+  --color-high-bg: #ffedd5;
+  --color-medium: #b45309;
+  --color-medium-bg: #fef3c7;
+  --color-low: #1d4ed8;
+  --color-low-bg: #dbeafe;
+  --color-info: #475569;
+  --color-info-bg: #e2e8f0;
+  --color-success: #15803d;
+  --color-success-bg: #dcfce7;
+
+  /* Layout */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.04);
+  --shadow-md: 0 4px 12px rgba(15, 23, 42, 0.06);
+
+  /* Spacing scale */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+
+  /* Type */
+  --font-sans: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, "Cascadia Mono", Menlo, Consolas,
+    monospace;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+button {
+  font-family: inherit;
+}
+
+a {
+  color: var(--color-accent);
+}
+
+code {
+  font-family: var(--font-mono);
+  font-size: 0.92em;
+}
+
+/* App shell ----------------------------------------------------------- */
+
+.app-header {
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  padding: var(--space-4) var(--space-6);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+
+.brand {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+
+.brand-mark {
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.brand-sub {
+  font-size: 13px;
+  color: var(--color-text-muted);
+}
+
+.app-header-meta {
+  font-size: 13px;
+  color: var(--color-text-muted);
+}
+
+.app-main {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: var(--space-6);
+  display: grid;
+  gap: var(--space-5);
+}
+
+@media (max-width: 720px) {
+  .app-main {
+    padding: var(--space-4);
+  }
+  .app-header {
+    padding: var(--space-3) var(--space-4);
+  }
+}
+
+/* Card primitives ----------------------------------------------------- */
+
+.card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+}
+
+.card-padded {
+  padding: var(--space-5);
+}
+
+/* Section header ------------------------------------------------------ */
+
+.section-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-3);
+  margin-bottom: var(--space-3);
+  flex-wrap: wrap;
+}
+
+.section-title {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.section-aside {
+  font-size: 13px;
+  color: var(--color-text-muted);
+}
+
+/* Score layout -------------------------------------------------------- */
+
+.score-grid {
+  display: grid;
+  grid-template-columns: 1.4fr 2fr;
+  gap: var(--space-5);
+}
+
+@media (max-width: 960px) {
+  .score-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.score-domain-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: var(--space-3);
+}
+
+.score-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-5);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+}
+
+.score-card-large {
+  padding: var(--space-6);
+  gap: var(--space-3);
+}
+
+.score-kind {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.score-value {
+  font-size: 36px;
+  font-weight: 700;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.score-value-large {
+  font-size: 64px;
+}
+
+.score-meta {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: 13px;
+  color: var(--color-text-muted);
+}
+
+.score-delta-pos {
+  color: var(--color-success);
+  font-weight: 600;
+}
+.score-delta-neg {
+  color: var(--color-critical);
+  font-weight: 600;
+}
+.score-delta-zero {
+  color: var(--color-text-faint);
+}
+
+/* Status badge -------------------------------------------------------- */
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 2px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  background: var(--color-info-bg);
+  color: var(--color-info);
+  border: 1px solid transparent;
+}
+
+.badge-critical {
+  background: var(--color-critical-bg);
+  color: var(--color-critical);
+}
+.badge-high {
+  background: var(--color-high-bg);
+  color: var(--color-high);
+}
+.badge-medium {
+  background: var(--color-medium-bg);
+  color: var(--color-medium);
+}
+.badge-low {
+  background: var(--color-low-bg);
+  color: var(--color-low);
+}
+.badge-info {
+  background: var(--color-info-bg);
+  color: var(--color-info);
+}
+.badge-success {
+  background: var(--color-success-bg);
+  color: var(--color-success);
+}
+.badge-band-weak {
+  background: var(--color-high-bg);
+  color: var(--color-high);
+}
+.badge-band-moderate {
+  background: var(--color-medium-bg);
+  color: var(--color-medium);
+}
+.badge-band-strong {
+  background: var(--color-success-bg);
+  color: var(--color-success);
+}
+.badge-band-excellent {
+  background: var(--color-success-bg);
+  color: var(--color-success);
+}
+
+/* Table --------------------------------------------------------------- */
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+.table th,
+.table td {
+  text-align: left;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--color-border);
+  vertical-align: top;
+}
+.table th {
+  font-weight: 600;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-text-muted);
+}
+.table td.numeric {
+  font-variant-numeric: tabular-nums;
+}
+.table tbody tr:last-child td {
+  border-bottom: none;
+}
+.table .row-sub {
+  color: var(--color-text-muted);
+  font-size: 12px;
+  margin-top: 2px;
+}
+
+/* Two-column grid ----------------------------------------------------- */
+
+.two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-5);
+}
+@media (max-width: 960px) {
+  .two-col {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Compliance bars ----------------------------------------------------- */
+
+.bar-row {
+  display: grid;
+  grid-template-columns: 140px 1fr 50px;
+  align-items: center;
+  gap: var(--space-3);
+  padding: 6px 0;
+  font-size: 13px;
+}
+.bar-track {
+  background: var(--color-surface-muted);
+  border-radius: 999px;
+  height: 8px;
+  overflow: hidden;
+}
+.bar-fill {
+  height: 100%;
+  background: var(--color-accent);
+  border-radius: 999px;
+}
+.bar-fill-critical {
+  background: var(--color-critical);
+}
+.bar-fill-weak {
+  background: var(--color-high);
+}
+.bar-fill-moderate {
+  background: var(--color-medium);
+}
+.bar-fill-strong {
+  background: var(--color-success);
+}
+.bar-fill-excellent {
+  background: var(--color-success);
+}
+
+/* Stat tile grid ------------------------------------------------------ */
+
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+  gap: var(--space-3);
+}
+.stat {
+  padding: var(--space-3);
+  background: var(--color-surface-muted);
+  border-radius: var(--radius-sm);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.stat-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.stat-value {
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Lists --------------------------------------------------------------- */
+
+.list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.list-item {
+  padding: 10px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  border-bottom: 1px solid var(--color-border);
+}
+.list-item:last-child {
+  border-bottom: none;
+}
+
+/* Chips --------------------------------------------------------------- */
+
+.chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.chip {
+  font-size: 12px;
+  font-family: var(--font-mono);
+  padding: 2px 8px;
+  border-radius: 4px;
+  background: var(--color-surface-muted);
+  color: var(--color-text-muted);
+  border: 1px solid var(--color-border);
+}
+
+/* Banner -------------------------------------------------------------- */
+
+.banner {
+  background: var(--color-medium-bg);
+  color: var(--color-medium);
+  border: 1px solid var(--color-medium);
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+/* Empty state --------------------------------------------------------- */
+
+.empty {
+  color: var(--color-text-muted);
+  font-size: 13px;
+  padding: var(--space-4) 0;
+}
