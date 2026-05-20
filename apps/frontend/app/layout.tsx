@@ -1,16 +1,13 @@
 // Root layout for the App Router.
-// Skeleton only — providers (MSAL, TanStack Query, Theme) will be wired here
-// in a follow-up branch. See docs/ROADMAP.md Phase 1.
 //
-// TODO(phase-1):
-//  - <MsalProvider> for Entra ID auth
-//  - <QueryClientProvider> for TanStack Query
-//  - <ThemeProvider> + design tokens
-//  - <TelemetryProvider> for OpenTelemetry web SDK
-//  - Strict CSP nonce propagation
+// Phase 8 wires the basic app chrome (brand header + main container) and
+// imports global styles. Auth providers, MSAL, tenant switcher, telemetry
+// providers, and theme toggle arrive in Phase 1.
 
 import type { Metadata, Viewport } from "next";
 import type { ReactNode } from "react";
+
+import "./globals.css";
 
 export const metadata: Metadata = {
   title: "AzureLens — Cloud Threat & Compliance Exposure Analyzer",
@@ -28,8 +25,23 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
       <body>
-        {/* TODO(phase-1): replace with full app chrome (nav, tenant switcher, user menu) */}
-        {children}
+        {/* TODO(phase-1):
+              - <MsalProvider>            Entra ID auth (PKCE)
+              - <QueryClientProvider>     TanStack Query
+              - <ThemeProvider>           design tokens + dark mode
+              - <TelemetryProvider>       OpenTelemetry web SDK
+              - Strict CSP nonce propagation per docs/SECURITY_MODEL.md § 3.1
+        */}
+        <header className="app-header">
+          <div className="brand">
+            <span className="brand-mark">AzureLens</span>
+            <span className="brand-sub">
+              Cloud Threat &amp; Compliance Exposure Analyzer
+            </span>
+          </div>
+          <div className="app-header-meta">Demo mode · Contoso Demo</div>
+        </header>
+        <main className="app-main">{children}</main>
       </body>
     </html>
   );
