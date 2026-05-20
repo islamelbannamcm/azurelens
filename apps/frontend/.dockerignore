@@ -1,0 +1,33 @@
+# AzureLens frontend — Docker build context exclusions.
+
+node_modules
+.next
+.next/cache
+
+# Local config / secrets — must never be baked into images.
+.env
+.env.*
+
+# VCS / IDE noise
+.git
+.gitignore
+.github
+.idea
+.vscode
+
+# Build artifacts that should be re-derived inside the image
+dist
+out
+build
+
+# Logs / coverage
+*.log
+coverage
+playwright-report
+.playwright
+.cache
+
+# Docs / Docker files themselves (not needed inside the image)
+*.md
+Dockerfile
+.dockerignore
