@@ -1,0 +1,66 @@
+# AzureLens — local demo orchestration (Phase 9).
+#
+# Brings up the API + frontend in a single command:
+#
+#   docker compose up --build
+#
+# The frontend is a Next.js standalone server; NEXT_PUBLIC_API_BASE_URL is
+# baked at BUILD time so it must be supplied as a build arg. The browser
+# reaches the API on the host's mapped port (8000), not on the
+# container DNS name.
+
+name: azurelens
+
+services:
+  api:
+    build:
+      context: ./apps/api
+    image: azurelens/api:demo
+    container_name: azurelens-api
+    environment:
+      AZURELENS_ENV: local
+      PYTHONUNBUFFERED: "1"
+    ports:
+      - "${API_HOST_PORT:-8000}:8000"
+    healthcheck:
+      test:
+        - CMD
+        - python
+        - -c
+        - "import urllib.request,sys; sys.exit(0 if urllib.request.urlopen('http://127.0.0.1:8000/api/v1/health',timeout=2).status==200 else 1)"
+      interval: 10s
+      timeout: 3s
+      retries: 6
+      start_period: 5s
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./apps/frontend
+      args:
+        # Baked into the Next.js build; browser-visible.
+        NEXT_PUBLIC_API_BASE_URL: "${NEXT_PUBLIC_API_BASE_URL:-http://localhost:8000}"
+    image: azurelens/frontend:demo
+    container_name: azurelens-frontend
+    environment:
+      NODE_ENV: production
+      # Same value at runtime — server components also read it for direct
+      # API calls during SSR. In demo mode they fall back to static data
+      # if the API is unreachable.
+      NEXT_PUBLIC_API_BASE_URL: "${NEXT_PUBLIC_API_BASE_URL:-http://localhost:8000}"
+    ports:
+      - "${FRONTEND_HOST_PORT:-3000}:3000"
+    depends_on:
+      api:
+        condition: service_started
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--spider", "http://127.0.0.1:3000/"]
+      interval: 10s
+      timeout: 3s
+      retries: 6
+      start_period: 10s
+    restart: unless-stopped
+
+# No volumes; the demo is stateless. No secrets; no networks beyond the
+# default Compose bridge. Phase 1 introduces an internal bridge + container
+# DNS once a database is added.
