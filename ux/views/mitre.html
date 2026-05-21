@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>AzureLens — MITRE ATT&CK Heatmap</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/styles.css" />
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div class="brand"><span class="dot"></span> AzureLens</div>
+      <button class="tenant">Contoso Ltd ▾</button>
+      <input class="search" type="search" placeholder="Search techniques, IDs, kill-chain phases…  ( / )" />
+      <div class="spacer"></div>
+      <div class="actions">
+        <button class="icon-btn" id="theme-toggle" title="Toggle theme (t)">◐</button>
+        <button class="icon-btn" title="Alerts">⌖</button>
+        <div class="avatar">IE</div>
+      </div>
+    </header>
+
+    <nav class="rail">
+      <div class="group">Posture</div>
+      <a href="../index.html" data-route="ux/index.html"><span class="ico">◆</span> Executive</a>
+      <a href="#"><span class="ico">◉</span> Identity</a>
+      <a href="#"><span class="ico">▣</span> Devices</a>
+      <a href="#"><span class="ico">⬢</span> Resources</a>
+      <a href="#"><span class="ico">≣</span> Data</a>
+      <div class="group">Threat</div>
+      <a href="mitre.html" data-route="ux/views/mitre.html"><span class="ico">▤</span> MITRE Heatmap</a>
+      <a href="#"><span class="ico">⌖</span> Live Threats</a>
+      <div class="group">Governance</div>
+      <a href="compliance.html" data-route="ux/views/compliance.html"><span class="ico">⎙</span> Compliance</a>
+      <a href="#"><span class="ico">⎘</span> Reports</a>
+      <a href="#"><span class="ico">⚙</span> Settings</a>
+    </nav>
+
+    <main class="main">
+      <div class="page-h">
+        <h1>MITRE ATT&amp;CK — Tenant Exposure</h1>
+        <span class="meta">Enterprise matrix v15.1 · weighted by finding severity × active-campaign boost</span>
+      </div>
+
+      <div class="mitre-controls" role="toolbar" aria-label="Heatmap overlays">
+        <span style="color:var(--text-3); font-size:12.5px; margin-right:4px;">Overlay:</span>
+        <button class="toggle active" data-overlay="exposure" aria-pressed="true">Exposure</button>
+        <button class="toggle" data-overlay="campaigns" aria-pressed="false">Active Campaigns</button>
+        <button class="toggle" data-overlay="detect" aria-pressed="false">⚑ No detection rule</button>
+        <button class="toggle" data-overlay="compliance" aria-pressed="false">Compliance impact</button>
+        <div style="flex:1"></div>
+        <span class="pill ok">low</span>
+        <span class="pill warn">med</span>
+        <span class="pill crit">high</span>
+      </div>
+
+      <div class="card">
+        <div class="mitre" id="mitre-grid" aria-label="MITRE ATT&CK heatmap">
+          <!-- populated by app.js -->
+        </div>
+        <p style="color: var(--text-3); font-size: 12.5px; margin: 16px 0 0;">
+          Exposure(T) = Σ(weight × severity × activeCampaignBoost). Cells with ⚑ have no Sentinel analytics rule mapped.
+        </p>
+      </div>
+
+      <section class="grid cols-2" style="margin-top: 16px;">
+        <div class="card">
+          <div class="card-h"><h2>Top techniques by exposure</h2></div>
+          <table class="controls-table">
+            <thead><tr><th>ID</th><th>Technique</th><th>Tactic</th><th>Exposure</th><th>Detection</th></tr></thead>
+            <tbody>
+              <tr><td class="code">T1566</td><td>Phishing</td><td>Initial Access</td><td><span class="pill crit">High</span></td><td><span class="pill warn">None</span></td></tr>
+              <tr><td class="code">T1133</td><td>External Remote Services</td><td>Initial Access</td><td><span class="pill crit">High</span></td><td><span class="pill warn">None</span></td></tr>
+              <tr><td class="code">T1078.004</td><td>Valid Accounts: Cloud</td><td>Privilege Escalation</td><td><span class="pill crit">High</span></td><td><span class="pill warn">None</span></td></tr>
+              <tr><td class="code">T1021.001</td><td>Remote Desktop Protocol</td><td>Lateral Movement</td><td><span class="pill crit">High</span></td><td><span class="pill ok">Covered</span></td></tr>
+              <tr><td class="code">T1486</td><td>Data Encrypted for Impact</td><td>Impact</td><td><span class="pill warn">Med</span></td><td><span class="pill warn">None</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="card">
+          <div class="card-h"><h2>Campaigns driving exposure</h2></div>
+          <div class="campaigns">
+            <div class="campaign">
+              <div class="ico">⚠</div>
+              <div>
+                <div class="title">Midnight Blizzard OAuth phishing</div>
+                <div class="sub">T1566, T1078.004 · MDTI <span class="mono">ti-art-9180</span></div>
+              </div>
+              <span class="pill crit">Active</span>
+            </div>
+            <div class="campaign">
+              <div class="ico">⚠</div>
+              <div>
+                <div class="title">Akira ransomware May-2026 wave</div>
+                <div class="sub">T1133, T1021.001, T1486 · CISA <span class="mono">AA26-127A</span></div>
+              </div>
+              <span class="pill crit">Active</span>
+            </div>
+            <div class="campaign">
+              <div class="ico">●</div>
+              <div>
+                <div class="title">Generic legacy-auth brute force</div>
+                <div class="sub">T1110, T1078 · MDTI rolling</div>
+              </div>
+              <span class="pill warn">Med</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <p class="page-foot">Press <span class="mono">g e</span> Executive · <span class="mono">g m</span> MITRE · <span class="mono">g c</span> Compliance · <span class="mono">/</span> search</p>
+    </main>
+  </div>
+  <script src="../assets/app.js"></script>
+</body>
+</html>
