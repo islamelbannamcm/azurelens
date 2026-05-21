@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>AzureLens — Executive Dashboard</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/styles.css" />
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div class="brand"><span class="dot"></span> AzureLens</div>
+      <button class="tenant" aria-label="Switch tenant">Contoso Ltd ▾</button>
+      <input class="search" type="search" placeholder="Search findings, controls, techniques, KQL…  ( / )" aria-label="Search" />
+      <div class="spacer"></div>
+      <div class="actions">
+        <button class="icon-btn" id="theme-toggle" title="Toggle theme (t)">◐</button>
+        <button class="icon-btn" title="Alerts">⌖</button>
+        <div class="avatar" title="islamelbanna.mcm@gmail.com">IE</div>
+      </div>
+    </header>
+
+    <nav class="rail" aria-label="Primary">
+      <div class="group">Posture</div>
+      <a href="index.html" data-route="ux/index.html"><span class="ico">◆</span> Executive</a>
+      <a href="#"><span class="ico">◉</span> Identity</a>
+      <a href="#"><span class="ico">▣</span> Devices</a>
+      <a href="#"><span class="ico">⬢</span> Resources</a>
+      <a href="#"><span class="ico">≣</span> Data</a>
+      <div class="group">Threat</div>
+      <a href="views/mitre.html" data-route="ux/views/mitre.html"><span class="ico">▤</span> MITRE Heatmap</a>
+      <a href="#"><span class="ico">⌖</span> Live Threats</a>
+      <div class="group">Governance</div>
+      <a href="views/compliance.html" data-route="ux/views/compliance.html"><span class="ico">⎙</span> Compliance</a>
+      <a href="#"><span class="ico">⎘</span> Reports</a>
+      <a href="#"><span class="ico">⚙</span> Settings</a>
+    </nav>
+
+    <main class="main">
+      <div class="page-h">
+        <h1>Executive Dashboard</h1>
+        <span class="meta">Contoso Ltd · last scan 14:02 UTC · next scan in 22 min</span>
+      </div>
+
+      <section class="grid cols-3" style="margin-bottom: 16px;">
+        <div class="card" aria-labelledby="hdr-score">
+          <div class="card-h"><h2 id="hdr-score">Tenant Security Posture</h2><span class="more">7-day</span></div>
+          <div class="score-hero">
+            <div class="score-ring" role="img" aria-label="Tenant security posture 72 out of 100">
+              <div class="score-val"><div class="n">72</div><div class="d">/ 100</div></div>
+            </div>
+            <div class="score-meta">
+              <span class="delta" aria-label="Down 4 points week over week">▼ 4 wk/wk</span>
+              <h3>Driver</h3>
+              <p>Two newly exposed prod VMs (public RDP) align with the Akira ransomware wave active in EU finance this week.</p>
+            </div>
+          </div>
+
+          <div class="subscores" style="margin-top: 20px;">
+            <div class="subscore"><div class="label">Identity</div><div class="track"><div class="fill" style="width:68%"></div></div><div class="val">68</div></div>
+            <div class="subscore"><div class="label">Device</div><div class="track"><div class="fill" style="width:81%"></div></div><div class="val">81</div></div>
+            <div class="subscore"><div class="label">Resource</div><div class="track"><div class="fill" style="width:70%"></div></div><div class="val">70</div></div>
+            <div class="subscore"><div class="label">Data</div><div class="track"><div class="fill" style="width:65%"></div></div><div class="val">65</div></div>
+            <div class="subscore"><div class="label">Threat</div><div class="track"><div class="fill" style="width:74%"></div></div><div class="val">74</div></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-h"><h2>Active Campaign Exposure</h2><span class="more">14 days</span></div>
+          <div class="campaigns">
+            <div class="campaign">
+              <div class="ico" aria-hidden="true">⚠</div>
+              <div>
+                <div class="title">Midnight Blizzard — OAuth phishing</div>
+                <div class="sub">4 exposed app consents · MDTI article <span class="mono">ti-art-9180</span></div>
+              </div>
+              <span class="pill crit">High</span>
+            </div>
+            <div class="campaign">
+              <div class="ico" aria-hidden="true">⚠</div>
+              <div>
+                <div class="title">Akira ransomware (T1133)</div>
+                <div class="sub">2 VMs with public RDP · CISA <span class="mono">AA26-127A</span></div>
+              </div>
+              <span class="pill crit">High</span>
+            </div>
+            <div class="campaign">
+              <div class="ico" aria-hidden="true">✓</div>
+              <div>
+                <div class="title">Cl0p MOVEit</div>
+                <div class="sub">Not applicable — no MOVEit deployment detected</div>
+              </div>
+              <span class="pill ok">N/A</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-h"><h2>Compliance Snapshot</h2><a class="more" href="views/compliance.html">open ↗</a></div>
+          <div class="subscores">
+            <div class="subscore"><div class="label">ISO 27001</div><div class="track"><div class="fill" style="width:79%; background: linear-gradient(90deg,var(--accent),var(--ok))"></div></div><div class="val">79%</div></div>
+            <div class="subscore"><div class="label">SOC 2</div><div class="track"><div class="fill" style="width:73%"></div></div><div class="val">73%</div></div>
+            <div class="subscore"><div class="label">CIS Azure</div><div class="track"><div class="fill" style="width:64%"></div></div><div class="val">64%</div></div>
+            <div class="subscore"><div class="label">NIST CSF</div><div class="track"><div class="fill" style="width:71%"></div></div><div class="val">71%</div></div>
+            <div class="subscore"><div class="label">MCSB v3</div><div class="track"><div class="fill" style="width:69%"></div></div><div class="val">69%</div></div>
+          </div>
+          <p style="color:var(--text-3); font-size:12.5px; margin: 14px 0 0">11 control failures · 6 attention · 142 passing</p>
+        </div>
+      </section>
+
+      <section class="grid cols-2">
+        <div class="card">
+          <div class="card-h"><h2>Top Prioritized Actions</h2><span class="more">by exploitability × impact × compliance weight</span></div>
+          <div class="actions-list">
+            <div class="action">
+              <div class="rank">1</div>
+              <div>
+                <div class="title">Disable legacy authentication</div>
+                <div class="meta">38 users affected · closes ISO A.8.5, MCSB IM-1 · ~30 min</div>
+              </div>
+              <button class="btn">Fix It</button>
+            </div>
+            <div class="action">
+              <div class="rank">2</div>
+              <div>
+                <div class="title">Convert 3 permanent Global Admins to PIM-eligible</div>
+                <div class="meta">closes NIST PR.AA-01, CIS 1.1.1 · ~1 hour</div>
+              </div>
+              <button class="btn">Fix It</button>
+            </div>
+            <div class="action">
+              <div class="rank">3</div>
+              <div>
+                <div class="title">Block public RDP on vm-app-03, vm-app-07</div>
+                <div class="meta">aligns to active Akira campaign · NSG rule · ~15 min</div>
+              </div>
+              <button class="btn">Fix It</button>
+            </div>
+            <div class="action">
+              <div class="rank">4</div>
+              <div>
+                <div class="title">Enable DLP for financial data classifier</div>
+                <div class="meta">GDPR Art. 32 · ISO A.8.12 · ~2 hours</div>
+              </div>
+              <button class="btn ghost">Plan</button>
+            </div>
+            <div class="action">
+              <div class="rank">5</div>
+              <div>
+                <div class="title">Onboard 14 devices to Defender for Endpoint</div>
+                <div class="meta">improves Device sub-score by est. +5 · ~half day</div>
+              </div>
+              <button class="btn ghost">Plan</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-h"><h2>What Changed This Week</h2><span class="more">scan deltas</span></div>
+          <ul style="margin:0; padding-left: 18px; color: var(--text-2); line-height: 1.7;">
+            <li>NSGs on <span class="mono">rg-prod-eu</span> modified to permit inbound RDP from any source (2 VMs).</li>
+            <li>4 enterprise apps newly granted user-consent for <span class="mono">Mail.Read</span>.</li>
+            <li>1 new Global Administrator created without MFA enforcement.</li>
+            <li>Defender for Endpoint coverage improved: 14 onboarded, 14 still missing.</li>
+            <li>Sentinel rule <span class="mono">SuspiciousSignIn-LegacyAuth</span> re-enabled.</li>
+          </ul>
+          <hr style="border:0; border-top:1px solid var(--border); margin: 16px 0;" />
+          <p style="margin:0; color: var(--text-2);">
+            <span class="pill info">AI summary</span>
+            Implementing actions 1–3 returns the posture score to an estimated
+            <strong style="color: var(--ok)">78/100</strong> and closes 9 of 11 control failures.
+          </p>
+        </div>
+      </section>
+
+      <p class="page-foot">Press <span class="mono">g e</span> Executive · <span class="mono">g m</span> MITRE · <span class="mono">g c</span> Compliance · <span class="mono">/</span> search · <span class="mono">t</span> theme</p>
+    </main>
+  </div>
+  <script src="assets/app.js"></script>
+</body>
+</html>
