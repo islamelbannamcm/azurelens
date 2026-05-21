@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>AzureLens — Compliance Center</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/styles.css" />
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div class="brand"><span class="dot"></span> AzureLens</div>
+      <button class="tenant">Contoso Ltd ▾</button>
+      <input class="search" type="search" placeholder="Search controls, evidence, frameworks…  ( / )" />
+      <div class="spacer"></div>
+      <div class="actions">
+        <button class="icon-btn" id="theme-toggle" title="Toggle theme (t)">◐</button>
+        <button class="icon-btn" title="Alerts">⌖</button>
+        <div class="avatar">IE</div>
+      </div>
+    </header>
+
+    <nav class="rail">
+      <div class="group">Posture</div>
+      <a href="../index.html" data-route="ux/index.html"><span class="ico">◆</span> Executive</a>
+      <a href="#"><span class="ico">◉</span> Identity</a>
+      <a href="#"><span class="ico">▣</span> Devices</a>
+      <a href="#"><span class="ico">⬢</span> Resources</a>
+      <a href="#"><span class="ico">≣</span> Data</a>
+      <div class="group">Threat</div>
+      <a href="mitre.html" data-route="ux/views/mitre.html"><span class="ico">▤</span> MITRE Heatmap</a>
+      <a href="#"><span class="ico">⌖</span> Live Threats</a>
+      <div class="group">Governance</div>
+      <a href="compliance.html" data-route="ux/views/compliance.html"><span class="ico">⎙</span> Compliance</a>
+      <a href="#"><span class="ico">⎘</span> Reports</a>
+      <a href="#"><span class="ico">⚙</span> Settings</a>
+    </nav>
+
+    <main class="main">
+      <div class="page-h">
+        <h1>Compliance Center</h1>
+        <span class="meta">Mapped from canonical findings · evidence pinned to immutable blob (WORM)</span>
+      </div>
+
+      <section class="grid cols-3" style="margin-bottom: 16px;">
+        <div class="card">
+          <div class="card-h"><h2>Coverage</h2></div>
+          <div class="subscores">
+            <div class="subscore"><div class="label">ISO 27001</div><div class="track"><div class="fill" style="width:79%"></div></div><div class="val">79%</div></div>
+            <div class="subscore"><div class="label">SOC 2</div><div class="track"><div class="fill" style="width:73%"></div></div><div class="val">73%</div></div>
+            <div class="subscore"><div class="label">CIS Azure</div><div class="track"><div class="fill" style="width:64%"></div></div><div class="val">64%</div></div>
+            <div class="subscore"><div class="label">NIST CSF</div><div class="track"><div class="fill" style="width:71%"></div></div><div class="val">71%</div></div>
+            <div class="subscore"><div class="label">MCSB v3</div><div class="track"><div class="fill" style="width:69%"></div></div><div class="val">69%</div></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-h"><h2>Failing controls (top)</h2></div>
+          <ul style="margin:0; padding-left: 18px; color: var(--text-2); line-height: 1.8;">
+            <li><span class="mono">CIS 1.1.1</span> — 3/7 Global Admins without MFA</li>
+            <li><span class="mono">ISO A.8.20</span> — Public RDP exposure on 2 VMs</li>
+            <li><span class="mono">SOC2 CC6.1</span> — No CA policy on privileged users</li>
+            <li><span class="mono">NIST PR.AA-01</span> — Permanent GA assignments (5)</li>
+            <li><span class="mono">MCSB IM-1</span> — Legacy auth enabled in 2 domains</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-h"><h2>Evidence locker</h2><span class="more">WORM · 7-yr retention</span></div>
+          <p style="margin: 0 0 8px; color: var(--text-2);">3,412 evidence artifacts pinned across 87 controls.</p>
+          <p style="margin: 0 0 16px; color: var(--text-3); font-size: 12.5px;">Auditor read-only role: <span class="mono">audit@contosobank.com</span></p>
+          <button class="btn">Export SOC 2 pack (.zip)</button>
+          <button class="btn ghost" style="margin-left:8px;">Sign &amp; lock</button>
+        </div>
+      </section>
+
+      <div class="card">
+        <div class="tabs" role="tablist">
+          <div class="tab active" data-fw="ISO27001" role="tab">ISO 27001:2022</div>
+          <div class="tab" data-fw="SOC2" role="tab">SOC 2</div>
+          <div class="tab" data-fw="CIS-Azure" role="tab">CIS Microsoft Azure 2.1</div>
+          <div class="tab" data-fw="NIST-CSF" role="tab">NIST CSF 2.0</div>
+          <div class="tab" data-fw="MCSB-v3" role="tab">MCSB v3</div>
+        </div>
+
+        <table class="controls-table" aria-label="Controls">
+          <thead>
+            <tr>
+              <th style="width:110px">Control</th>
+              <th>Title</th>
+              <th style="width:120px">Status</th>
+              <th>Evidence / Mapped findings</th>
+              <th style="width:130px">Last checked</th>
+              <th style="width:60px"></th>
+            </tr>
+          </thead>
+          <tbody id="controls-body"></tbody>
+        </table>
+      </div>
+
+      <p class="page-foot">Press <span class="mono">g e</span> Executive · <span class="mono">g m</span> MITRE · <span class="mono">g c</span> Compliance · <span class="mono">/</span> search</p>
+    </main>
+  </div>
+  <script src="../assets/app.js"></script>
+</body>
+</html>
