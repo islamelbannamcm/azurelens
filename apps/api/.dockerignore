@@ -36,3 +36,11 @@ htmlcov
 tests
 dist
 build
+
+# IMPORTANT: README.md MUST be in the build context — pyproject.toml has
+# `readme = "README.md"`, so `pip install .` (run inside the builder stage
+# of apps/api/Dockerfile) fails with a hatchling error if the file is
+# missing. Keep this explicit allow even if future patterns above would
+# already permit it; it documents the contract and survives later edits
+# (e.g. a global `*.md` exclusion).
+!README.md
