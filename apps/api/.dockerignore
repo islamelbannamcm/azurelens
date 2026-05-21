@@ -28,7 +28,6 @@ htmlcov
 
 # Docs / VCS / IDE noise
 *.log
-*.md
 .git
 .gitignore
 .github
