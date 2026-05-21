@@ -66,6 +66,7 @@ from app.models.scoring import (
 from app.models.tenant import (
     ConnectorStatus,
     ConnectorType,
+    DataResidency,
     Role,
     Tenant,
     TenantConnector,
@@ -95,6 +96,7 @@ __all__ = [
     # tenant
     "ConnectorStatus",
     "ConnectorType",
+    "DataResidency",
     "Role",
     "Tenant",
     "TenantConnector",
