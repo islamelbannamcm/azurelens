@@ -1,13 +1,16 @@
 // Root layout for the App Router.
 //
-// Phase 8 wires the basic app chrome (brand header + main container) and
-// imports global styles. Auth providers, MSAL, tenant switcher, telemetry
-// providers, and theme toggle arrive in Phase 1.
+// Phase 11 replaces the Phase-8 single-page chrome with the enterprise
+// `AppShell` (dark navy Sidebar + Topbar wrapping a light content surface).
+// Auth providers, MSAL, telemetry, and theme toggle still arrive in Phase 1
+// — see docs/PHASE_11_ENTERPRISE_UX.md for the deferred items.
 
 import type { Metadata, Viewport } from "next";
 import type { ReactNode } from "react";
 
 import "./globals.css";
+
+import { AppShell } from "@/components/shell/AppShell";
 
 export const metadata: Metadata = {
   title: "AzureLens — Cloud Threat & Compliance Exposure Analyzer",
@@ -32,16 +35,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
               - <TelemetryProvider>       OpenTelemetry web SDK
               - Strict CSP nonce propagation per docs/SECURITY_MODEL.md § 3.1
         */}
-        <header className="app-header">
-          <div className="brand">
-            <span className="brand-mark">AzureLens</span>
-            <span className="brand-sub">
-              Cloud Threat &amp; Compliance Exposure Analyzer
-            </span>
-          </div>
-          <div className="app-header-meta">Demo mode · Contoso Demo</div>
-        </header>
-        <main className="app-main">{children}</main>
+        <AppShell>{children}</AppShell>
       </body>
     </html>
   );
